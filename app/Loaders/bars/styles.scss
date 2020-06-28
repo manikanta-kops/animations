@@ -1,0 +1,42 @@
+$loader-height: 100px;
+$loader-width: 100px;
+$num-bars: 5;
+$anim-dur: 1000ms;
+$anim-delay: $anim-dur / $num-bars;
+$top-loader-color: #4caf50;
+$bottom-loader-color: #303f9f;
+
+.bars {
+  display: flex;
+  height: $loader-height;
+  width: $loader-width;
+  .bar {
+    background-color: $top-loader-color;
+    width: 25%;
+    height: 100%;
+    margin: 5px;
+    animation: 1s linear 0s infinite backwards alternate expandShrink;
+    &:hover {
+      animation-play-state: paused;
+    }
+    @for $i from 1 through $num-bars {
+      &--#{$i} {
+        animation-delay: $anim-delay * $i;
+      }
+      &--inv--#{$i} {
+        animation-direction: alternate-reverse;
+        animation-delay: $anim-delay * $i;
+        background-color: $bottom-loader-color;
+      }
+    }
+  }
+}
+
+@keyframes expandShrink {
+  0% {
+    transform: scaleY(0.5);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}

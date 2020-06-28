@@ -1,0 +1,110 @@
+$ball-length: 100px;
+$drop-length: 10px;
+$ball-color: #17158a;
+$outer-line-width: 10px;
+$outer-line-animation: 1s;
+$drop-animation: 4s;
+$ripple-color: rgba(255, 255, 255, 0.103);
+
+.glow-ball {
+  height: $ball-length;
+  width: $ball-length;
+  position: relative;
+  &__drop {
+    position: absolute;
+    width: $drop-length;
+    height: $drop-length;
+    background-color: #89e8f0;
+    top: 3px;
+    left: $ball-length/2 - $drop-length/2;
+    border-radius: 100% 5% 100% 100%;
+    z-index: 1;
+    opacity: 0;
+    transform: rotate(-45deg);
+    animation: drip $drop-animation cubic-bezier(0.98, 0.26, 0.02, 1.46)
+      $outer-line-animation forwards;
+  }
+  &__inner-layer {
+    width: calc(100% - #{$outer-line-width});
+    height: calc(100% - #{$outer-line-width});
+    border-radius: 50%;
+    background-color: $ball-color;
+    position: absolute;
+    top: $outer-line-width/2;
+    left: $outer-line-width/2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &--ripple {
+      background-color: transparent;
+      opacity: 0;
+      margin: 0 auto;
+      width: $drop-length - 2px;
+      height: $drop-length - 2px;
+      border-radius: 50%;
+      //   animation: ripple 2s cubic-bezier(1, 0.29, 0.04, 0.93) infinite
+      //     $outer-line-animation + $drop-animation;
+      animation: showMe 1s linear forwards $outer-line-animation +
+          $drop-animation,
+        ripple 2s linear infinite $outer-line-animation + $drop-animation;
+    }
+  }
+  &__outer-layer {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+      0deg,
+      rgba(223, 223, 223, 1) 0%,
+      rgba(135, 232, 241, 1) 100%
+    );
+    animation: $outer-line-animation roundup;
+    transform-origin: bottom;
+  }
+}
+
+@keyframes roundup {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes drip {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    border-radius: 100%;
+    opacity: 1;
+    transform: translateY($ball-length/2 - $drop-length);
+  }
+}
+@keyframes showMe {
+  0% {
+    opacity: 0;
+    box-shadow: 0 0 0 0 $ripple-color, 0 0 0 5px $ripple-color,
+      0 0 0 10px $ripple-color, 0 0 0 25px $ripple-color;
+  }
+  100% {
+    box-shadow: 0 0 0 0 $ripple-color, 0 0 0 5px $ripple-color,
+      0 0 0 10px $ripple-color, 0 0 0 25px $ripple-color;
+    opacity: 1;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 $ripple-color, 0 0 0 5px $ripple-color,
+      0 0 0 10px $ripple-color, 0 0 0 25px $ripple-color;
+  }
+  100% {
+    box-shadow: 0 0 0 5px $ripple-color, 0 0 0 10px $ripple-color,
+      0 0 0 25px $ripple-color, 0 0 0 35px rgba(101, 255, 120, 0);
+  }
+}
